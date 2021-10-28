@@ -1,7 +1,7 @@
 version: '3.8'
 
 networks:
-  dbnet:
+  mysqlnet:
     driver: bridge
 
 services:
@@ -16,11 +16,11 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?err}
     volumes:
+      - ./conf/mysql56_my.cnf:/etc/my.cnf
       - ./data/mysql56:/var/lib/mysql
-      - ./config/mysql56:/etc/mysql/conf.d
       - ./logs/mysql56:/var/log/mysql
     networks:
-      - dbnet
+      - mysqlnet
 
   mysql57:
     image: mysql:5.7
@@ -32,11 +32,11 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?err}
     volumes:
+      - ./conf/mysql57_my.cnf:/etc/my.cnf
       - ./data/mysql57:/var/lib/mysql
-      - ./config/mysql57:/etc/mysql/conf.d
       - ./logs/mysql57:/var/log/mysql
     networks:
-      - dbnet
+      - mysqlnet
 
   mysql80:
     image: mysql:8
@@ -48,11 +48,11 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?err}
     volumes:
+      - ./conf/mysql80_my.cnf:/etc/my.cnf
       - ./data/mysql80:/var/lib/mysql
-      - ./config/mysql80:/etc/mysql/conf.d
       - ./logs/mysql80:/var/log/mysql
     networks:
-      - dbnet
+      - mysqlnet
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -60,14 +60,10 @@ services:
     restart: unless-stopped
     ports:
       - 8080:80
-    depends_on:
-      - mysql56
-      - mysql57
-      - mysql80
     environment:
       PMA_ARBITRARY: 1
     networks:
-      - dbnet
+      - mysqlnet
     links:
       - 'mysql56:mysql56'
       - 'mysql57:mysql57'
