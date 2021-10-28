@@ -1,7 +1,4 @@
 .env
 
-data/mysql56/mysql-files/
-data/mysql57/mysql-files/
-data/mysql80/mysql-files/
-
+data/
 logs/

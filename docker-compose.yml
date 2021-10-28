@@ -16,8 +16,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?err}
     volumes:
-      - ./data/mysql56/mysql-files:/var/lib/mysql
-      - ./data/mysql56/conf.d:/etc/mysql/conf.d
+      - ./data/mysql56:/var/lib/mysql
+      - ./config/mysql56:/etc/mysql/conf.d
       - ./logs/mysql56:/var/log/mysql
     networks:
       - dbnet
@@ -32,9 +32,9 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?err}
     volumes:
-      - ./data/mysql57/mysql-files:/var/lib/mysql
-      - ./data/mysql57/conf.d:/etc/mysql/conf.d
-      - ./logs/mysql56:/var/log/mysql
+      - ./data/mysql57:/var/lib/mysql
+      - ./config/mysql57:/etc/mysql/conf.d
+      - ./logs/mysql57:/var/log/mysql
     networks:
       - dbnet
 
@@ -48,9 +48,9 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?err}
     volumes:
-      - ./data/mysql80/mysql-files:/var/lib/mysql
-      - ./data/mysql80/conf.d:/etc/mysql/conf.d
-      - ./logs/mysql56:/var/log/mysql
+      - ./data/mysql80:/var/lib/mysql
+      - ./config/mysql80:/etc/mysql/conf.d
+      - ./logs/mysql80:/var/log/mysql
     networks:
       - dbnet
 
