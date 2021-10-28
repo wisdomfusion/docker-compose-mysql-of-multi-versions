@@ -1,0 +1,74 @@
+version: '3.8'
+
+networks:
+  dbnet:
+    driver: bridge
+
+services:
+
+  mysql56:
+    image: mysql:5.6
+    container_name: ${APP_NAME:?err}-mysql56
+    restart: unless-stopped
+    tty: true
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?err}
+    volumes:
+      - ./data/mysql56/mysql-files:/var/lib/mysql
+      - ./data/mysql56/my.cnf:/etc/mysql/my.cnf
+      - ./logs/mysql56:/var/log/mysql
+    networks:
+      - dbnet
+
+  mysql57:
+    image: mysql:5.7
+    container_name: ${APP_NAME:?err}-mysql57
+    restart: unless-stopped
+    tty: true
+    ports:
+      - 3307:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?err}
+    volumes:
+      - ./data/mysql57/mysql-files:/var/lib/mysql
+      - ./data/mysql57/my.cnf:/etc/mysql/my.cnf
+      - ./logs/mysql57:/var/log/mysql
+    networks:
+      - dbnet
+
+  mysql80:
+    image: mysql:8
+    container_name: ${APP_NAME:?err}-mysql80
+    restart: unless-stopped
+    tty: true
+    ports:
+      - 3308:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?err}
+    volumes:
+      - ./data/mysql80/mysql-files:/var/lib/mysql
+      - ./data/mysql80/my.cnf:/etc/mysql/my.cnf
+      - ./logs/mysql57:/var/log/mysql
+    networks:
+      - dbnet
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: ${APP_NAME:?err}-phpmyadmin
+    restart: unless-stopped
+    ports:
+      - 8080:80
+    depends_on:
+      - mysql56
+      - mysql57
+      - mysql80
+    environment:
+      PMA_ARBITRARY: 1
+    networks:
+      - dbnet
+    links:
+      - 'mysql56:mysql56'
+      - 'mysql57:mysql57'
+      - 'mysql80:mysql80'
